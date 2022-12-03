@@ -7,13 +7,13 @@ import java.lang.reflect.Type
 
 class ListConverter {
     @TypeConverter
-    fun fromString(value: String?): ArrayList<String?>? {
-        val listType: Type = object : TypeToken<ArrayList<String?>?>() {}.type
+    fun fromString(value: String?): List<String?>? {
+        val listType: Type = object : TypeToken<List<String?>?>() {}.type
         return Gson().fromJson(value, listType)
     }
 
     @TypeConverter
-    fun fromArrayList(list: ArrayList<String?>?): String? {
+    fun fromArrayList(list: List<String?>?): String? {
         val gson = Gson()
         return gson.toJson(list)
     }

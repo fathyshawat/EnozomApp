@@ -8,6 +8,7 @@
     android:padding="@dimen/_10sdp">
 
     <ImageView
+        android:id="@+id/image"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
         android:src="@drawable/placeholder" />
@@ -37,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
-        android:hint="@string/enter_full_name"
+        android:hint="@string/enter_email_address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/store"
         app:layout_constraintTop_toBottomOf="@+id/store">

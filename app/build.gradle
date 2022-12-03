@@ -88,4 +88,7 @@ dependencies {
     implementation "com.intuit.ssp:ssp-android:${sspVersion}"
     implementation "com.intuit.sdp:sdp-android:${sspVersion}"
 
+    //camera picker
+    implementation 'com.github.esafirm:android-image-picker:3.0.0'
+
 }

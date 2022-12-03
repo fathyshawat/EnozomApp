@@ -11,7 +11,7 @@ class Employee {
     var id: Int = 0
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     var image: ByteArray? = null
-    var skills: ArrayList<String?>? = null
+    var skills: List<String?>? = null
     var name: String? = null
     var email: String? = null
 }
