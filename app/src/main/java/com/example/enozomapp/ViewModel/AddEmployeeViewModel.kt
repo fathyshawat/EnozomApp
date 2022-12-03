@@ -18,5 +18,11 @@ class AddEmployeeViewModel @Inject constructor(private val repository: UpdateIns
         }
     }
 
+    fun update(employee: Employee){
+        viewModelScope.launch {
+            repository.update(employee)
+        }
+    }
+
 
 }

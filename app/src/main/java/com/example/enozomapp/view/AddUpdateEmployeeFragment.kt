@@ -1,16 +1,17 @@
 package com.example.enozomapp.view
 
 import android.Manifest
-import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerMode
@@ -33,24 +34,20 @@ class AddUpdateEmployeeFragment : Fragment() {
     private lateinit var binding: AddEmployeeBinding
     private var imageByte: ByteArray? = null
     private val mainViewModel by viewModels<AddEmployeeViewModel>()
-
+    private var employee: Employee? = null
+    private var isEdit: Boolean? = null
     private val skillsList = listOf(
         "Android",
         "Ios",
         "ASP.NET",
         "PHP"
     )
-
-    private val selectedSkills = ArrayList<String>()
+    private var selectedSkills = ArrayList<String>()
     private val requestMultiplePermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             permissions.entries.forEach {
                 if (!it.value) {
-                    Toast.makeText(
-                        requireActivity(),
-                        "Approve All permissions",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    toast("Approve All permissions")
                     return@forEach
                 }
                 moveToPickImage()
@@ -76,14 +73,49 @@ class AddUpdateEmployeeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getExtra()
+        initView()
         setAdapter()
         initEvent()
+    }
 
+    private fun getExtra() {
+        isEdit = arguments?.getBoolean("fromEdit")
+        employee = arguments?.getParcelable("employee")
+    }
+
+    private fun initView() {
+        if (isEdit == true) {
+            binding.employeeNameEd.setText(employee?.name)
+            binding.employeeEmailEd.setText(employee?.email)
+            selectedSkills = employee?.skills as ArrayList<String>
+            imageByte = employee?.image
+            drawImage()
+            selectedSkills.forEach {
+                addSkillChip(it)
+            }
+
+        }
 
     }
 
-    private fun permission() {
+    private fun drawImage() {
+        val bmp = BitmapFactory.decodeByteArray(employee?.image, 0, employee?.image?.let {
+            it.size
+        } ?: 0)
+        binding.image.post(Runnable {
+            binding.image.setImageBitmap(
+                Bitmap.createScaledBitmap(
+                    bmp,
+                    binding.image.width,
+                    binding.image.height,
+                    false
+                )
+            )
+        })
+    }
 
+    private fun permission() {
         requestMultiplePermissions.launch(
             arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -101,11 +133,7 @@ class AddUpdateEmployeeFragment : Fragment() {
         binding.tietSkills.setOnItemClickListener { parent, _, position, _ ->
             val selectedSkills = parent.getItemAtPosition(position) as String
             if (this.selectedSkills.contains(selectedSkills)) {
-                Toast.makeText(
-                    requireActivity(),
-                    "You have already selected $selectedSkills",
-                    Toast.LENGTH_LONG
-                ).show()
+                toast("You have already selected $selectedSkills")
             } else {
                 addSkillChip(selectedSkills)
             }
@@ -117,7 +145,7 @@ class AddUpdateEmployeeFragment : Fragment() {
                 binding.employeeName.error = "this is field required"
                 return@setOnClickListener
             }
-            insert()
+            insertAndUpdate()
         }
 
         binding.image.setOnClickListener {
@@ -125,13 +153,24 @@ class AddUpdateEmployeeFragment : Fragment() {
         }
     }
 
-    private fun insert() {
+    private fun insertAndUpdate() {
         val employee = Employee()
         employee.skills = selectedSkills
         employee.email = binding.employeeEmailEd.text.toString()
         employee.name = binding.employeeNameEd.text.toString()
         employee.image = imageByte
-        mainViewModel.insert(employee)
+        when (isEdit) {
+            true -> {
+                mainViewModel.update(employee)
+                toast("Info is edited successfully")
+                activity?.supportFragmentManager?.popBackStack()
+            }
+            else -> {
+                toast("Info is added successfully")
+                mainViewModel.insert(employee)
+                activity?.supportFragmentManager?.popBackStack()
+            }
+        }
     }
 
     private fun getChip(name: String): Chip {
@@ -147,7 +186,6 @@ class AddUpdateEmployeeFragment : Fragment() {
     private fun addSkillChip(planetName: String) {
         selectedSkills.add(planetName)
         binding.cgTags.addView(getChip(planetName))
-
     }
 
     private fun moveToPickImage() {
@@ -163,5 +201,12 @@ class AddUpdateEmployeeFragment : Fragment() {
         )
     }
 
+    private fun toast(msg: String) {
+        Toast.makeText(
+            requireActivity(),
+            msg,
+            Toast.LENGTH_LONG
+        ).show()
+    }
 
 }

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.enozomapp.databinding.MainActivityBinding
 import com.example.enozomapp.view.AddUpdateEmployeeFragment
+import com.example.enozomapp.view.EmployeeInfoFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -23,11 +24,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun launchFragment(){
-
         val manager = supportFragmentManager
         this.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         val transaction = manager.beginTransaction()
-        val f = AddUpdateEmployeeFragment()
+        val f = EmployeeInfoFragment()
         transaction.replace(R.id.frame_layout, f)
         transaction.commit()
     }

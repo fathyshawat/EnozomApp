@@ -50,22 +50,20 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:backgroundTint="@color/red"
             android:text="@string/delete"
-            app:layout_constraintBottom_toBottomOf="@id/edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/edit"
-            app:layout_constraintTop_toTopOf="@id/edit" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/edit"
             style="@style/ButtonStyle"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:backgroundTint="@color/blue"
             android:text="@string/edit"
-            app:layout_constraintBottom_toBottomOf="@id/email"
-            app:layout_constraintEnd_toStartOf="@id/delete"
-            app:layout_constraintStart_toEndOf="@id/email"
-            app:layout_constraintTop_toTopOf="@id/email" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
