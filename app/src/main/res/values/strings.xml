@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">EnozomApp</string>
+    <string name="add_employee">Add Employee</string>
+    <string name="enter_full_name">Enter full name</string>
+    <string name="skills">Skills</string>
+    <string name="delete">delete</string>
+    <string name="edit">edit</string>
 </resources>
