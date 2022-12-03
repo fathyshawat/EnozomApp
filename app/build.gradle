@@ -54,6 +54,9 @@ dependencies {
     def roomVersion = '2.4.2'
     def lifecycle = "2.5.1"
     def fragment = "1.5.2"
+    def gson = '2.10'
+
+    implementation "com.google.code.gson:gson:${gson}"
 
     // Architectural Components
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
