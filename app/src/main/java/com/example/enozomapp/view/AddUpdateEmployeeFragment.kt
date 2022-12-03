@@ -94,25 +94,27 @@ class AddUpdateEmployeeFragment : Fragment() {
             selectedSkills.forEach {
                 addSkillChip(it)
             }
-
+            binding.add.text = "Edit Employee"
         }
 
     }
 
     private fun drawImage() {
-        val bmp = BitmapFactory.decodeByteArray(employee?.image, 0, employee?.image?.let {
-            it.size
-        } ?: 0)
-        binding.image.post(Runnable {
-            binding.image.setImageBitmap(
-                Bitmap.createScaledBitmap(
-                    bmp,
-                    binding.image.width,
-                    binding.image.height,
-                    false
+        employee?.image?.let {
+            val bmp = BitmapFactory.decodeByteArray(employee?.image, 0, employee?.image?.let {
+                it.size
+            } ?: 0)
+            binding.image.post(Runnable {
+                binding.image.setImageBitmap(
+                    Bitmap.createScaledBitmap(
+                        bmp,
+                        binding.image.width,
+                        binding.image.height,
+                        false
+                    )
                 )
-            )
-        })
+            })
+        }
     }
 
     private fun permission() {

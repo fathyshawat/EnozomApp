@@ -45,10 +45,15 @@ constructor(
                 Gson().toJson(employee?.skills).replace("[", "").replace("]", "")
                     .replace("\"", " ")
             itemBinding.skills.text = skills
-            val bmp = BitmapFactory.decodeByteArray(employee?.image, 0, employee?.image?.let {
-                it.size
-            } ?: 0)
-            itemBinding.imageEmployee.post(Runnable {
+
+
+
+            employee?.image?.let {
+                itemBinding.imageEmployee.post(Runnable {
+                    val bmp =
+                        BitmapFactory.decodeByteArray(employee.image, 0, employee.image?.let {
+                            it.size
+                        } ?: 0)
                     itemBinding.imageEmployee.setImageBitmap(
                         Bitmap.createScaledBitmap(
                             bmp,
@@ -56,8 +61,9 @@ constructor(
                             itemBinding.imageEmployee.height,
                             false
                         )
-                    )})
-
+                    )
+                })
+            }
             itemBinding.delete.setOnClickListener { v ->
                 viewClick?.click(bindingAdapterPosition, v)
             }
@@ -65,7 +71,9 @@ constructor(
                 viewClick?.click(bindingAdapterPosition, v)
             }
         }
+    }
 
+    private fun setImage(){
 
     }
 
