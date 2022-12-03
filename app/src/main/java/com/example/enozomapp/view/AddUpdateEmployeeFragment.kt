@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import com.esafirm.imagepicker.features.ImagePickerConfig
 import com.esafirm.imagepicker.features.ImagePickerMode
@@ -34,7 +33,7 @@ class AddUpdateEmployeeFragment : Fragment() {
     private lateinit var binding: AddEmployeeBinding
     private var imageByte: ByteArray? = null
     private val mainViewModel by viewModels<AddEmployeeViewModel>()
-    private var employee: Employee? = null
+    private var employeeData: Employee? = null
     private var isEdit: Boolean? = null
     private val skillsList = listOf(
         "Android",
@@ -81,15 +80,15 @@ class AddUpdateEmployeeFragment : Fragment() {
 
     private fun getExtra() {
         isEdit = arguments?.getBoolean("fromEdit")
-        employee = arguments?.getParcelable("employee")
+        employeeData = arguments?.getParcelable("employee")
     }
 
     private fun initView() {
         if (isEdit == true) {
-            binding.employeeNameEd.setText(employee?.name)
-            binding.employeeEmailEd.setText(employee?.email)
-            selectedSkills = employee?.skills as ArrayList<String>
-            imageByte = employee?.image
+            binding.employeeNameEd.setText(employeeData?.name)
+            binding.employeeEmailEd.setText(employeeData?.email)
+            selectedSkills = employeeData?.skills as ArrayList<String>
+            imageByte = employeeData?.image
             drawImage()
             selectedSkills.forEach {
                 addSkillChip(it)
@@ -100,8 +99,8 @@ class AddUpdateEmployeeFragment : Fragment() {
     }
 
     private fun drawImage() {
-        employee?.image?.let {
-            val bmp = BitmapFactory.decodeByteArray(employee?.image, 0, employee?.image?.let {
+        employeeData?.image?.let {
+            val bmp = BitmapFactory.decodeByteArray(employeeData?.image, 0, employeeData?.image?.let {
                 it.size
             } ?: 0)
             binding.image.post(Runnable {
@@ -163,6 +162,7 @@ class AddUpdateEmployeeFragment : Fragment() {
         employee.image = imageByte
         when (isEdit) {
             true -> {
+                employee.id= employeeData?.id!!
                 mainViewModel.update(employee)
                 toast("Info is edited successfully")
                 activity?.supportFragmentManager?.popBackStack()
